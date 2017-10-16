@@ -21,7 +21,15 @@
                     @course.Lecturer.Name
                     @if (Model.ShowAction)
                     {
-                        <button data-user-id="@course.LecturerId" class="btn btn-default btn-xs js-toggle-follow">Follow</button>
+                        var isFollowing = Model.FollowingLecturers.Any(followingLecturers => course.LecturerId == followingLecturers.Id);
+                        if (isFollowing)
+                        {
+                            <button data-user-id="@course.LecturerId" class="btn btn-default btn-xs js-toggle-following">Following</button>
+                        }
+                        else
+                        {
+                            <button data-user-id="@course.LecturerId" class="btn btn-default btn-xs js-toggle-follow">Follow</button>
+                        }
                     }
                 </span>              
 
@@ -31,8 +39,17 @@
                 </span>         
                 @if (Model.ShowAction)
                 {
-                    <button data-course-id="@course.Id" class="btn btn-default btn-xs js-toggle-attendance">Going?</button>
+                    var isAttending = Model.AttendingCourses.Any(attendingCourses => course.Id == attendingCourses.Id);
+                    if (isAttending)
+                    {
+                        <button data-course-id="@course.Id" class="btn btn-info btn-xs js-toggle-attending">Going</button>
+                    }
+                    else
+                    {
+                        <button data-course-id="@course.Id" class="btn btn-default btn-xs js-toggle-attendance">Going?</button>
+                    }
                 }
+                
             </div>
         </li>
     }
@@ -44,32 +61,94 @@
         $(document).ready(function() {
             $(".js-toggle-attendance").click(function(e) {
                 var button = $(e.target);
-                $.post("/api/attendances", { courseId: button.attr("data-course-id") })
-                    .done(function() {
-                        button
-                            .removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Going");
+                $.post("/api/attendances/", { courseId: button.attr("data-course-id") })
+                    .done(function () {
+                        alert("Attended Course");
+                        location.reload();
+                        //button
+                        //    .removeClass("btn-default js-toggle-attendance")
+                        //    .addClass("btn-info js-toggle-attending")
+                        //    .text("Going");
                     })
                     .fail(function() {
                         alert("Something failed!");
+                        location.reload();
                     });
             });
         });
     </script>
     
-<script>
+    <script>
+            $(document).ready(function () {
+                $(".js-toggle-attending").click(function (e) {
+                    var button = $(e.target);
+                    $.ajax({
+                        url: '/api/attendances',
+                        type: 'DELETE',
+                        data: {
+                            courseId: button.attr("data-course-id")
+                        }                  
+                    })
+                        .done(function () {
+                            alert("Canceled Attending Course!!");
+                            location.reload();
+                            //button
+                            //    .removeClass("btn-info js-toggle-attending")
+                            //    .addClass("btn-default js-toggle-attendance")
+                            //    .text("Going?");
+                        })
+                        .fail(function () {
+                            alert("Something failed!");
+                            location.reload();
+                        });
+                });
+            });
+    </script>
+    
+    <script>
         $(document).ready(function () {
             $(".js-toggle-follow").click(function (e) {
                 var button = $(e.target);
                 $.post("/api/followings", { followeeId: button.attr("data-user-id") })
                     .done(function () {
-                        button.text("Following");
+                        alert("Followed Success!!");
+                        location.reload();
+                        //button
+                        //    .removeClass("js-toggle-follow")
+                        //    .addClass("js-toggle-following")
+                        //    .text("Following");
                     })
                     .fail(function () {
                         alert("Something failed!");
+                        location.reload();
                     });
             });
         });
-</script>
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-following").click(function (e) {
+                var button = $(e.target);
+                $.ajax({
+                    url: '/api/followings',
+                    type: 'DELETE',
+                    data: {
+                        followeeId: button.attr("data-user-id")
+                    }
+                })
+                    .done(function () {
+                        alert("UnFollowed Success!!");
+                        location.reload();
+                        //button
+                        //    .removeClass("js-toggle-following")
+                        //    .addClass("js-toggle-follow")
+                        //    .text("Follow");
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                        location.reload();
+                    });
+            });
+        });
+    </script>
 }

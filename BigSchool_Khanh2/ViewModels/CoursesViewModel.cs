@@ -9,6 +9,10 @@ namespace BigSchool_Khanh2.ViewModels
     public class CoursesViewModel
     {
         public IEnumerable<Course> UpcommingCourses { get; set; }
+
+        public IEnumerable<ApplicationUser> FollowingLecturers { get; set; }
+
+        public IEnumerable<Course> AttendingCourses { get; set; }
         
         public bool ShowAction { get; set; }
     }

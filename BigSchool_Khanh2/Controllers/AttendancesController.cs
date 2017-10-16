@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -36,6 +37,23 @@ namespace BigSchool_Khanh2.Controllers
             };
 
             _dbContext.Attendances.Add(attendance);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IHttpActionResult DeleteAttendance(AttendanceDto attendanceDto)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var attendance = new Attendance
+            {
+                CourseId = attendanceDto.CourseId,
+                AttendeeId = userId,
+            };
+
+            _dbContext.Entry(attendance).State = EntityState.Deleted;
             _dbContext.SaveChanges();
 
             return Ok();

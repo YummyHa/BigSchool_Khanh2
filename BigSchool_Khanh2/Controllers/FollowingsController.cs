@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -39,6 +40,23 @@ namespace BigSchool_Khanh2.Controllers
 
             return Ok();
         }
-        
+
+        [HttpDelete]
+        public IHttpActionResult DeleteFollowee(FollowingDto followingDto)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var following = new Following
+            {
+                FolloweeId = followingDto.FolloweeId,
+                FollowerId = userId,
+            };
+
+            _dbContext.Entry(following).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
     }
 }
