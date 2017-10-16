@@ -11,6 +11,8 @@ namespace BigSchool_Khanh2.Models
     {
         public int Id { get; set; }
 
+        public bool isCanceled { get; set; }
+
         public ApplicationUser Lecturer { get; set; }
 
         [Required]

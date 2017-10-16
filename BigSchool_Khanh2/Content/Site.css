@@ -75,3 +75,13 @@ textarea {
         left: 70px;
     }
 
+    .course > li .action {
+        display: none;
+        position: absolute;
+        left: 70px;
+    }
+
+    .course > li:hover .action {
+        display: block;
+    }
+
