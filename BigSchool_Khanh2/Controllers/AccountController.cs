@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BigSchool_Khanh2.Models;
+using BigSchool_Khanh2.ViewModels;
 
 namespace BigSchool_Khanh2.Controllers
 {
@@ -17,9 +19,11 @@ namespace BigSchool_Khanh2.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        public ApplicationDbContext _DbContext;
 
         public AccountController()
         {
+            _DbContext = new ApplicationDbContext();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -151,7 +155,7 @@ namespace BigSchool_Khanh2.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -481,5 +485,24 @@ namespace BigSchool_Khanh2.Controllers
             }
         }
         #endregion
+
+        [Authorize]
+        public ActionResult Following()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var users = _DbContext.Followings
+                .Where(f => f.FollowerId == userId)
+                .Select(f => f.Followee)
+                .ToList();
+
+            var viewModel = new LecturersViewModel
+            {
+                FollowingLecturers = users,
+                ShowAction = User.Identity.IsAuthenticated,
+            };
+
+            return View(viewModel);
+        }
     }
 }

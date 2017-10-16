@@ -23,9 +23,10 @@ textarea {
     max-width: 280px;
 }
 
-/* Override default bootstrap */
+/* Override some default bootstrap */
+/* Override header bar*/
 .navbar-inverse {
-    background-color: yellowgreen;
+    background-color: #546e7a;
     border-color: aliceblue;
 }
 
@@ -36,3 +37,41 @@ textarea {
 .navbar-inverse .navbar-brand {
     color: white;
 }
+
+    .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+        color: #ffffff;
+        background-color: #29434e;
+    }
+
+/* Override Button Primary*/
+.btn-primary {
+    color: #ffffff;
+    background-color: #00695c;
+    border-color: #00695c;
+}
+
+/* Course Custome Styles*/
+.course {
+    list-style: none;
+}
+
+.course > li {
+    position: relative;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+    .course > li .date {
+        text-align: center;
+        background-color: #512DA8;
+        color: #ffffff;
+        width: 60px;
+        border-radius: 8px;
+    }
+
+    .course > li .details {
+        position: absolute;
+        top: 0;
+        left: 70px;
+    }
+

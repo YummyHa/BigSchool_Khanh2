@@ -1,0 +1,18 @@
+﻿@model BigSchool_Khanh2.ViewModels.LecturersViewModel
+@{
+    ViewBag.Title = "Following";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Following Lecturers</h2>
+
+<ul class="list-group">
+    @foreach (var user in Model.FollowingLecturers)
+    {
+        <li class="list-group-item">
+            @user.Name
+        </li>
+    }
+    
+</ul>
+
