@@ -13,7 +13,7 @@ namespace BigSchool_Khanh2.Controllers.Api
     [Authorize]
     public class CoursesController : ApiController
     {
-        private readonly ApplicationDbContext _dbContext;
+        public ApplicationDbContext _dbContext { get; set; }
 
         public CoursesController()
         {
@@ -21,10 +21,10 @@ namespace BigSchool_Khanh2.Controllers.Api
         }
 
         [HttpDelete]
-        public IHttpActionResult Cancel([FromBody]int id)
+        public IHttpActionResult Cancel(int id)
         {
             var userId = User.Identity.GetUserId();
-            var course = _dbContext.Courses.Single(c => c.Id == id && c.LecturerId == userId);
+            var course = _dbContext.Courses.SingleOrDefault(c => c.Id == id && c.LecturerId == userId);
 
             if (course.isCanceled)
             {

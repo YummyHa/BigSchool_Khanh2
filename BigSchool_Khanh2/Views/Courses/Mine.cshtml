@@ -45,11 +45,8 @@
                 bootbox.confirm("Are you sure to cancel?",
                     function() {
                         $.ajax({
-                                url: '/api/courses/',                               
-                                type: 'DELETE',
-                                data: {
-                                    id: link.attr("data-course-id")
-                                }
+                                url: "/api/courses/" + link.attr("data-course-id"),
+                                method: "DELETE"
                             })
                             .done(function() {
                                 link.parents("li").fadeOut(function() {
